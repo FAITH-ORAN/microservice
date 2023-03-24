@@ -2,27 +2,31 @@ package com.ecommerce.microcommerce.model;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-@JsonFilter("monFiltreDynamique")
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+//@JsonFilter("monFiltreDynamique")
 
+@Entity
 public class Product {
 
+    @Id
     private int id;
     private String nom;
     private int prix;
 
     // information que nous ne souhaitons pas exposer
 
-    private int prixAchat;
+    private int prix_achat;
 
     //constructor
     public Product() {
     }
 
-    public Product(int id, String nom, int prix, int prixAchat) {
+    public Product(int id, String nom, int prix, int prix_achat) {
         this.id = id;
         this.nom = nom;
         this.prix = prix;
-        this.prixAchat = prixAchat;
+        this.prix_achat = prix_achat;
     }
 
     // getters
@@ -39,12 +43,12 @@ public class Product {
         return prix;
     }
 
-    public int getPrixAchat() {
-        return prixAchat;
+    public int getPrix_achat() {
+        return prix_achat;
     }
 
-    // setter
 
+    // setter
     public void setId(int id) {
         this.id = id;
     }
@@ -57,17 +61,19 @@ public class Product {
         this.prix = prix;
     }
 
-    public void setPrixAchat(int prixAchat) {
-        this.prixAchat = prixAchat;
+    public void setPrix_achat(int prix_achat) {
+        this.prix_achat = prix_achat;
     }
 
     //to String
+
     @Override
     public String toString() {
         return "Product{" +
                 "id=" + id +
                 ", nom='" + nom + '\'' +
                 ", prix=" + prix +
+                ", prix_achat=" + prix_achat +
                 '}';
     }
 }
