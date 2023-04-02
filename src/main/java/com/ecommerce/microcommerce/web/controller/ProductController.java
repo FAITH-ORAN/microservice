@@ -1,9 +1,11 @@
 package com.ecommerce.microcommerce.web.controller;
 import com.ecommerce.microcommerce.model.Product;
 import com.ecommerce.microcommerce.web.dao.ProductDao;
+import com.ecommerce.microcommerce.web.exeptions.ProductIntrouvableException;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
@@ -50,9 +52,12 @@ public class ProductController {
     //}
 
     //liste un seul produit
-    @GetMapping("tes/produits/{id}")
+    @GetMapping("produits/{id}")
     public Product afficheUnProduut(@PathVariable int id){
-        return productDao.findById(id);
+       Product product = productDao.findById(id);
+       if(product == null)throw new ProductIntrouvableException("le produit avec l'id" + id +" est introuvable");
+       return product;
+
     }
 
     //trouver une liste de produit dont le prix est supérrieur à ...
@@ -63,7 +68,7 @@ public class ProductController {
 
     //ajouter un produit
     @PostMapping(value = "test/produits")
-    public ResponseEntity<Product> ajouterProduit(@RequestBody Product product){
+    public ResponseEntity<Product> ajouterProduit(@Valid @RequestBody Product product){
         Product productAdded = productDao.save(product);
         if(Objects.isNull(productAdded)){
             return ResponseEntity.noContent().build();
